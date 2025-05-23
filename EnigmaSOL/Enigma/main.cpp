@@ -1,6 +1,7 @@
 #include <iostream>
 #include <Windows.h>
 #include "menus.h"
+#include "structs.h"
 
 void main() {
 
@@ -19,6 +20,13 @@ void main() {
 
 	int opcion = 1;
 	bool exit = 0;
+	std::vector<mapeadoAbecedario> mapaAbecedario;
+
+	for (int i = 0; i < 26; i++)
+	{
+		mapaAbecedario[i].posicion = i + 1;
+		mapaAbecedario[i].letra = char(int("A") + i);
+	}
 
 	do
 	{
@@ -45,12 +53,12 @@ void main() {
 			break;
 		case 0:
 			std::cout << "Saliendo";
-			Sleep(200);
-			std::cout << ".";
-			Sleep(200);
-			std::cout << ".";
-			Sleep(200);
-			std::cout << ".";
+
+			for (int i = 0; i < 3; i++)
+			{
+				Sleep(200);
+				std::cout << ".";
+			}
 			break;
 		default:
 			break;

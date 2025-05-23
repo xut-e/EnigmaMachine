@@ -95,13 +95,12 @@ void elegir_documento() {
 				nombreValido = true;
 				break;
 			}
-
-			std::cout << " - " << linea << std::endl;
 		}
 
 		archivo.close();
 		remove("lista_archivos.txt");
 
+		system("cls");
 
 	} while (!nombreValido);
 	

@@ -25,12 +25,53 @@ void listar_archivos_txt() {
 
 void traducir_mensaje(std::string archivoSinTraducir) {
 
+    std::fstream archivo(archivoSinTraducir);
+
+    if (!archivo.is_open())
+    {
+        std::cout << "No se pudo abrir el earchivo!" << std::endl;
+    }
+
+    char caracter;
+    std::string resultado;
+
+    while (archivo.get(caracter))
+    {
+        if (isalpha(caracter))
+        {
+            resultado += toupper(caracter);
+        }
+    }
+
+    archivo.close();
+
+    std::string resultadoEspaciado;
+
+    for (int i = 0; i < resultado.size(); i++)
+    {
+        if (i % 5 == 0)
+        {
+            resultadoEspaciado += " ";
+        }
+
+        resultadoEspaciado += resultado[i];
+    }
+
+    std::ofstream archivoTraducido(archivoSinTraducir);
+
+    if (archivoTraducido.is_open())
+    {
+        archivoTraducido << resultadoEspaciado;
+        archivoTraducido.close();
+    }
+    else
+    {
+        std::cout << "No se pudo escribir el archivo!" << std::endl;
+    }
 }
 
 void cifrar(std::string archivoCifrar) {
     
-    
-
     traducir_mensaje(archivoCifrar);
 }
 
