@@ -1,8 +1,9 @@
 #pragma once
+#include "structs.h"
 
-char pasarPlugBoard(char caracterLeido);
+mapeado pasarPlugBoard(char caracterLeido);
 
 char secuenciaRotores(char caracterLeido);
 
-char pasarReflector(char caracterLeido);
+void pasarReflector(mapeado& posicionCaracter);
 

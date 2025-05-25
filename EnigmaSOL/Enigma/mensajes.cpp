@@ -2,6 +2,7 @@
 #include <fstream>
 #include <string>
 #include "utils.h"
+#include "const.h"
 
 void introducir_mensaje() {
 	int opcion = 1;
@@ -32,9 +33,16 @@ void introducir_mensaje() {
 		{
 			if (!((nombreArchivo[i] >= '0' && nombreArchivo[i] <= '9') || (nombreArchivo[i] >= 'A' && nombreArchivo[i] <= 'Z') || (nombreArchivo[i] >= 'a' && nombreArchivo[i] <= 'z') || (nombreArchivo[i] == '.' || (nombreArchivo[i] == '_'))))
 			{
+				std::cout << "[!] El nombre del archivo solo puede contener letras, numeros y '_'. Ademas debe acabar en '.txt'." << std::endl;
 				nombreValido = false;
 				break;
 			}
+		}
+
+		if (nombreArchivo == ARCHIVO_PLUGBOARD || nombreArchivo == ARCHIVO_R1 || nombreArchivo == ARCHIVO_R2 || nombreArchivo == ARCHIVO_R3 || nombreArchivo == ARCHIVO_REFLECTOR || nombreArchivo == ARCHIVO_TEMPORAL)
+		{
+			std::cout << "[!] No tienes permisos para usar esos archivos." << std::endl;
+			nombreValido = false;
 		}
 
 	} while (!nombreValido);
@@ -80,13 +88,14 @@ void elegir_documento() {
 
 		system("dir /b *.txt > lista_archivos.txt");
 
-		std::ifstream archivo("lista_archivos.txt");
+		std::ifstream archivo(ARCHIVO_TEMPORAL);
 		std::string linea;
 
 		while (std::getline(archivo, linea)) {
 			
-			if (linea == "lista_archivos.txt")
+			if (linea == ARCHIVO_TEMPORAL || linea == ARCHIVO_PLUGBOARD || linea == ARCHIVO_R1 || linea == ARCHIVO_R2 || linea == ARCHIVO_R3 || linea == ARCHIVO_REFLECTOR)
 			{
+				std::cout << "[!] No tienes permisos para usar esos archivos." << std::endl;
 				continue;
 			}
 
@@ -94,6 +103,10 @@ void elegir_documento() {
 			{
 				nombreValido = true;
 				break;
+			}
+			else
+			{
+				std::cout << "[!] El archivo no existe." << std::endl;
 			}
 		}
 

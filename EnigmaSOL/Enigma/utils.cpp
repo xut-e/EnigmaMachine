@@ -128,15 +128,7 @@ void cifrar(std::string archivoCifrar) {
             continue;
         }
 
-        caracterCambiado = pasarPlugBoard(caracterLeido);
-
-        caracterCambiado = secuenciaRotores(caracterCambiado);
-
-        caracterCambiado = pasarReflector(caracterCambiado);
-
-        caracterCambiado = secuenciaRotores(caracterCambiado);
-
-        caracterCambiado = pasarPlugBoard(caracterCambiado);
+        caracterCambiado = secuenciaRotores(caracterLeido);
 
         archivoEscribirCifrado.put(caracterCambiado);
 
@@ -165,6 +157,7 @@ void inicializarArchivosConfiguracion() {
     char lista3[LETRAS_ABCEDARIO] = { 'T', 'Y', 'O', 'B', 'V', 'K', 'R', 'J', 'X', 'Q', 'M', 'D', 'S', 'H', 'U', 'W', 'A', 'N', 'Z', 'E', 'C', 'G', 'P', 'L', 'I', 'F' };
     char lista4[LETRAS_ABCEDARIO] = { 'E', 'P', 'L', 'U', 'Z', 'W', 'K', 'X', 'O', 'R', 'J', 'D', 'Q', 'S', 'C', 'N', 'V', 'I', 'H', 'A', 'F', 'G', 'Y', 'B', 'M', 'T' };
     char lista5[LETRAS_ABCEDARIO] = { 'M', 'G', 'Y', 'T', 'J', 'F', 'Q', 'E', 'S', 'B', 'O', 'L', 'X', 'H', 'D', 'R', 'I', 'A', 'P', 'V', 'C', 'N', 'K', 'U', 'W', 'Z' };
+    char listaRT[LETRAS_ABCEDARIO] = { 'B', 'M', 'D', 'A', 'L', 'G', 'K', 'E', 'C', 'J', 'H', 'F', 'I', 'A', 'C', 'F', 'J', 'B', 'E', 'G', 'I', 'D', 'K', 'H', 'L', 'M' };
     
     
     for (int i = 0; i < LETRAS_ABCEDARIO; i++)
@@ -173,6 +166,7 @@ void inicializarArchivosConfiguracion() {
         archivoR1.put(lista3[i]);
         archivoR2.put(lista4[i]);
         archivoR3.put(lista5[i]);
+        archivoRT.put(listaRT[i]);
     }
 
     archivoPB.put('\n');
@@ -187,6 +181,7 @@ void inicializarArchivosConfiguracion() {
     archivoR1.close();
     archivoR2.close();
     archivoR3.close();
+    archivoRT.close();
 
     for (int i = 0; i < LETRAS_ABCEDARIO; i++)
     {
@@ -194,4 +189,5 @@ void inicializarArchivosConfiguracion() {
     }
     
     archivoPB.close();
+    
 }

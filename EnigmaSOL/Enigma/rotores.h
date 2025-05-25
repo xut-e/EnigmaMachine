@@ -1,8 +1,8 @@
 #pragma once
 #include "structs.h"
 
-char pasoRotor1(char entradaR1);
+void pasoRotor1(mapeado& posicionCaracter);
 
-char pasoRotor2(char entradaR2);
+void pasoRotor2(mapeado& posicionCaracter);
 
-char pasoRotor3(char entradaR3);
+void pasoRotor3(mapeado& posicionCaracter);
