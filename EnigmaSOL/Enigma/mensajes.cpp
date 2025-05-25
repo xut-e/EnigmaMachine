@@ -14,12 +14,12 @@ void introducir_mensaje() {
 
 		if (!nombreValido)
 		{
-			std::cout << "El nombre introducido no es valido!" << std::endl;
+			std::cout << "[!] El nombre introducido no es valido!" << std::endl;
 		}
 
 		nombreValido = true;
 
-		std::cout << "Introduce el nombre del archivo que se generara (archivo.txt): ";
+		std::cout << "[-] Introduce el nombre del archivo que se generara (archivo.txt): ";
 		std::cin >> nombreArchivo;
 
 		if (!(nombreArchivo[nombreArchivo.length() - 1] == 't' && nombreArchivo[nombreArchivo.length() - 2] == 'x' && nombreArchivo[nombreArchivo.length() - 3] == 't' && nombreArchivo[nombreArchivo.length() - 4] == '.'))
@@ -41,7 +41,7 @@ void introducir_mensaje() {
 
 	std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
 
-	std::cout << "Introduce el mensaje a cifrar: ";
+	std::cout << "[-] Introduce el mensaje a cifrar: ";
 	std::getline(std::cin, mensaje);
 
 
@@ -54,7 +54,7 @@ void introducir_mensaje() {
 	}
 	else
 	{
-		std::cout << "No se encuentra dicho archivo!" << std::endl;
+		std::cout << "[!] No se encuentra dicho archivo!" << std::endl;
 	}
 
 	cifrar(nombreArchivo);
@@ -71,11 +71,11 @@ void elegir_documento() {
 	{
 		nombreValido = false;
 		system("cls");
-		std::cout << "Los archivos disponibles son:" << std::endl;
+		std::cout << "[-] Los archivos disponibles son:" << std::endl;
 
 		listar_archivos_txt();
 
-		std::cout << "Elige un archivo para cifrar: ";
+		std::cout << "[-] Elige un archivo para cifrar: ";
 		std::cin >> archivoElegido;
 
 		system("dir /b *.txt > lista_archivos.txt");

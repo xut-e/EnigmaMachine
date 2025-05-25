@@ -1,2 +1,16 @@
-﻿  utils.cpp
-  Enigma.vcxproj -> C:\Users\eduar\OneDrive\Escritorio\GITHUB\EnigmaMachine\EnigmaSOL\x64\Debug\Enigma.exe
+﻿  logica.cpp
+  main.cpp
+C:\Users\eduar\OneDrive\Escritorio\GITHUB\EnigmaMachine\EnigmaSOL\Enigma\main.cpp(6,6): warning C4326: el tipo de valor devuelto de 'main' debe ser 'int' en lugar de 'void'
+C:\Users\eduar\OneDrive\Escritorio\GITHUB\EnigmaMachine\EnigmaSOL\Enigma\main.cpp(28,37): warning C4311: '<function-style-cast>': truncamiento de puntero de 'const char *' a 'int'
+C:\Users\eduar\OneDrive\Escritorio\GITHUB\EnigmaMachine\EnigmaSOL\Enigma\main.cpp(28,37): warning C4302: '<function-style-cast>': truncamiento de 'const char *' a 'int'
+  mensajes.cpp
+  menus.cpp
+  rotores.cpp
+  utils.cpp
+  Generando código...
+C:\Users\eduar\OneDrive\Escritorio\GITHUB\EnigmaMachine\EnigmaSOL\Enigma\rotores.cpp(15,1): error C4700: se utilizó la variable local 'salida' sin inicializar
+C:\Users\eduar\OneDrive\Escritorio\GITHUB\EnigmaMachine\EnigmaSOL\Enigma\rotores.cpp(9,1): error C4700: se utilizó la variable local 'salida' sin inicializar
+C:\Users\eduar\OneDrive\Escritorio\GITHUB\EnigmaMachine\EnigmaSOL\Enigma\rotores.cpp(21,1): error C4700: se utilizó la variable local 'salida' sin inicializar
+C:\Users\eduar\OneDrive\Escritorio\GITHUB\EnigmaMachine\EnigmaSOL\Enigma\logica.cpp(18,1): error C4700: se utilizó la variable local 'caracterCambiado' sin inicializar
+C:\Users\eduar\OneDrive\Escritorio\GITHUB\EnigmaMachine\EnigmaSOL\Enigma\logica.cpp(6,1): error C4700: se utilizó la variable local 'caracterCambiado' sin inicializar
+C:\Users\eduar\OneDrive\Escritorio\GITHUB\EnigmaMachine\EnigmaSOL\Enigma\logica.cpp(12,1): error C4700: se utilizó la variable local 'caracterCambiado' sin inicializar

@@ -7,3 +7,5 @@ void cifrar(std::string archivoCifrar);
 void descifrar(std::string archivoCifrar);
 
 void traducir_mensaje(std::string archivoSinTraducir);
+
+void inicializarArchivosConfiguracion();

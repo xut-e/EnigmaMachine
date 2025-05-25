@@ -2,8 +2,9 @@
 #include <Windows.h>
 #include "menus.h"
 #include "structs.h"
+#include "utils.h"
 
-void main() {
+int main() {
 
 	std::cout << "                   Bienvenido a " << std::endl;
 	std::cout << "                    la maquina" << std::endl;
@@ -20,13 +21,8 @@ void main() {
 
 	int opcion = 1;
 	bool exit = 0;
-	std::vector<mapeadoAbecedario> mapaAbecedario;
-
-	for (int i = 0; i < 26; i++)
-	{
-		mapaAbecedario[i].posicion = i + 1;
-		mapaAbecedario[i].letra = char(int("A") + i);
-	}
+	
+	inicializarArchivosConfiguracion();
 
 	do
 	{
@@ -86,6 +82,8 @@ void main() {
 	//4.Bucle de cifrado (cableado + rotores[notch] + reflector + rotores[notch] + cableado)
 
 		//4.1. Primera letra -> Paso por cableado -> Paso por el rotor1.txt (shiftean las letras) -> (si el ultimo caracter del rotor anterior (1) coincide con el notch (segunda linea del rotor siguiente[2] shiftear rotor 2) -> paso por rotor2.txt ->  (si el ultimo caracter del rotor anterior (2) coincide con el notch (segunda linea del rotor siguiente[3] shiftear rotor 3) -> paso por rotor3.txt -> de vuelta, primero comprobacion despues entrada en rotor 3 hasta el cableado
+
+	return 0;
 }
 
 /*

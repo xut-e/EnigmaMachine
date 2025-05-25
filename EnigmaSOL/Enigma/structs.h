@@ -1,5 +1,7 @@
 #pragma once
 #include <vector>
+
+/*
 struct pares
 {
 	char entrada;
@@ -11,3 +13,4 @@ struct mapeadoAbecedario
 	int posicion;
 	char letra;
 };
+*/
