@@ -4,73 +4,56 @@
 #include "utils.h"
 #include "const.h"
 
-void introducir_mensaje() {
-	int opcion = 1;
+void introducir_mensaje(mapeado& posicionCaracter, bool cifrando) {
 	std::string mensaje, nombreArchivo;
-	bool nombreValido = true;
+	bool nombreValido = false;
 
-	do
-	{
-		
-
-		if (!nombreValido)
-		{
-			std::cout << "[!] El nombre introducido no es valido!" << std::endl;
-		}
-
-		nombreValido = true;
-
+	do {
 		std::cout << "[-] Introduce el nombre del archivo que se generara (archivo.txt): ";
 		std::cin >> nombreArchivo;
 
-		if (!(nombreArchivo[nombreArchivo.length() - 1] == 't' && nombreArchivo[nombreArchivo.length() - 2] == 'x' && nombreArchivo[nombreArchivo.length() - 3] == 't' && nombreArchivo[nombreArchivo.length() - 4] == '.'))
-		{
+		// Validación mejorada del nombre de archivo
+		nombreValido = true;
+		if (nombreArchivo.length() < 4 ||
+			nombreArchivo.substr(nombreArchivo.length() - 4) != ".txt") {
+			std::cout << "[!] El archivo debe terminar en .txt" << std::endl;
 			nombreValido = false;
 			continue;
 		}
 
-		for (int i = 0; i < nombreArchivo.length(); i++)
-		{
-			if (!((nombreArchivo[i] >= '0' && nombreArchivo[i] <= '9') || (nombreArchivo[i] >= 'A' && nombreArchivo[i] <= 'Z') || (nombreArchivo[i] >= 'a' && nombreArchivo[i] <= 'z') || (nombreArchivo[i] == '.' || (nombreArchivo[i] == '_'))))
-			{
-				std::cout << "[!] El nombre del archivo solo puede contener letras, numeros y '_'. Ademas debe acabar en '.txt'." << std::endl;
+		for (char c : nombreArchivo) {
+			if (!isalnum(c) && c != '.' && c != '_') {
+				std::cout << "[!] Caracter no permitido en el nombre: " << c << std::endl;
 				nombreValido = false;
 				break;
 			}
 		}
-
-		if (nombreArchivo == ARCHIVO_PLUGBOARD || nombreArchivo == ARCHIVO_R1 || nombreArchivo == ARCHIVO_R2 || nombreArchivo == ARCHIVO_R3 || nombreArchivo == ARCHIVO_REFLECTOR || nombreArchivo == ARCHIVO_TEMPORAL)
-		{
-			std::cout << "[!] No tienes permisos para usar esos archivos." << std::endl;
-			nombreValido = false;
-		}
-
 	} while (!nombreValido);
 
-	std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-
+	std::cin.ignore(); // Limpiar el buffer del salto de línea anterior (IA)
 	std::cout << "[-] Introduce el mensaje a cifrar: ";
 	std::getline(std::cin, mensaje);
 
-
 	std::ofstream archivoACifrar(nombreArchivo);
-
-	if (archivoACifrar.is_open())
-	{
+	if (archivoACifrar.is_open()) {
 		archivoACifrar << mensaje;
 		archivoACifrar.close();
+		if (cifrando)
+		{
+			cifrar(nombreArchivo, posicionCaracter);
+		}
+		else
+		{
+			descifrar(nombreArchivo, posicionCaracter);
+		}
+		
 	}
-	else
-	{
-		std::cout << "[!] No se encuentra dicho archivo!" << std::endl;
+	else {
+		std::cout << "[!] No se pudo crear el archivo!" << std::endl;
 	}
-
-	cifrar(nombreArchivo);
-
-	system("cls");
 }
 
-void elegir_documento() {
+void elegir_documento(mapeado& posicionCaracter, bool cifrando) {
 
 	std::string archivoElegido;
 	bool nombreValido;
@@ -117,6 +100,14 @@ void elegir_documento() {
 
 	} while (!nombreValido);
 	
-	cifrar(archivoElegido);
+	if (cifrando)
+	{
+		cifrar(archivoElegido, posicionCaracter);
+	}
+	else
+	{
+		descifrar(archivoElegido, posicionCaracter);
+	}
+	
 
 }

@@ -127,6 +127,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="config.cpp" />
     <ClCompile Include="logica.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="mensajes.cpp" />
@@ -135,6 +136,7 @@
     <ClCompile Include="utils.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="config.h" />
     <ClInclude Include="const.h" />
     <ClInclude Include="logica.h" />
     <ClInclude Include="mensajes.h" />
