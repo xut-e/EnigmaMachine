@@ -1,4 +1,9 @@
-﻿  logica.cpp
-C:\Users\eduar\OneDrive\Escritorio\GITHUB\EnigmaMachine\EnigmaSOL\Enigma\logica.cpp(27,37): warning C4267: '=': conversión de 'size_t' a 'int'; posible pérdida de datos
-C:\Users\eduar\OneDrive\Escritorio\GITHUB\EnigmaMachine\EnigmaSOL\Enigma\logica.cpp(33,41): warning C4267: '=': conversión de 'size_t' a 'int'; posible pérdida de datos
+﻿  config.cpp
+  logica.cpp
+  main.cpp
+  mensajes.cpp
+  menus.cpp
+  rotores.cpp
+  utils.cpp
+  Generando código...
   Enigma.vcxproj -> C:\Users\eduar\OneDrive\Escritorio\GITHUB\EnigmaMachine\EnigmaSOL\x64\Debug\Enigma.exe

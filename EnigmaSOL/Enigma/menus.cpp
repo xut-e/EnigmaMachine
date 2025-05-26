@@ -5,8 +5,10 @@
 #include "config.h"
 
 void menu_cifrado(mapeado& posicionCaracter) {
+
 	int opcion = 1;
 	bool cifrando = true;
+
 	system("cls");
 
 	std::cout << "MENU DE CIFRADO" << std::endl;
@@ -41,8 +43,10 @@ void menu_cifrado(mapeado& posicionCaracter) {
 }
 
 void menu_descifrado(mapeado& posicionCaracter) {
+
 	int opcion = 1;
 	bool cifrando = false;
+
 	system("cls");
 
 	std::cout << "MENU DE DESCIFRADO" << std::endl;
@@ -53,6 +57,7 @@ void menu_descifrado(mapeado& posicionCaracter) {
 		{
 			std::cout << "La opcion introducida no es valida!" << std::endl;
 		}
+
 		std::cout << "Elige una opcion: ";
 		std::cin >> opcion;
 
@@ -77,11 +82,13 @@ void menu_descifrado(mapeado& posicionCaracter) {
 }
 
 void modificar_configuracion(mapeado& posicionCaracter) {
+
 	int opcion = 1;
 	system("cls");
 
 	std::cout << "MENU DE CONFIGURACION" << std::endl;
 	std::cout << "\t1. Introducir ventanas.\n\t2. Cambiar rotores. \n\t0. Salir." << std::endl;
+
 	do
 	{
 		if (opcion != 1 && opcion != 2 && opcion != 0)

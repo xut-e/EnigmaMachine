@@ -3,326 +3,202 @@
 #include <fstream>
 #include <Windows.h>
 #include <unordered_set>
+#include <algorithm>
 #include "logica.h"
 #include "const.h"
 
-//IA
-void listar_archivos_txt() {
-    // Llamamos al comando dir y guardamos la salida en un archivo temporal
-    system("dir /b *.txt > lista_archivos.txt");
+int obtenerNotch(const char* archivoRotor) {
 
-    std::ifstream archivo(ARCHIVO_TEMPORAL);
-    std::string linea;
+    std::ifstream archivo(archivoRotor);
 
-    while (std::getline(archivo, linea)) {
-        
-        if (linea == ARCHIVO_TEMPORAL || linea == ARCHIVO_PLUGBOARD || linea == ARCHIVO_REFLECTOR || linea == ARCHIVO_R1 || linea == ARCHIVO_R2 || linea == ARCHIVO_R3) continue;
-       
-        std::cout << " - " << linea << std::endl;
+    if (!archivo.is_open())
+    {
+        return 0;
     }
+
+    std::string linea1, linea2;
+
+    std::getline(archivo, linea1);
+    std::getline(archivo, linea2);
 
     archivo.close();
 
-    // (Opcional) Eliminar el archivo temporal si no quieres dejar rastro
-    remove(ARCHIVO_TEMPORAL);
+    if (linea2.empty())
+    {
+        return 0;
+    }
+
+    return toupper(linea2[0]) - 'A';
 }
 
-void traducir_mensaje(std::string archivoSinTraducir) {
+void avanzarRotores(mapeado& posicionCaracter) {
 
-    // Leer el contenido original
-    std::ifstream archivoEntrada(archivoSinTraducir);
-    if (!archivoEntrada.is_open()) {
-        std::cout << "[!] No se pudo abrir el archivo para lectura!" << std::endl;
-        return;
-    }
+    posicionCaracter.contador1 = (posicionCaracter.contador1 + 1) % 26;
 
-    std::string contenido, resultado;
-    char caracter;
+    if (posicionCaracter.contador1 == 0) 
+    {  
+        posicionCaracter.contador2 = (posicionCaracter.contador2 + 1) % 26;
 
-    // Filtrar y convertir caracteres
-    while (archivoEntrada.get(caracter)) {
-        if (isalpha(caracter)) {
-            resultado += toupper(caracter);
+        if (posicionCaracter.contador2 == 0) 
+        {
+            posicionCaracter.contador3 = (posicionCaracter.contador3 + 1) % 26;
         }
     }
-    archivoEntrada.close();
+}
 
-    // Agrupar en bloques de 5 caracteres
-    std::string resultadoEspaciado;
-    for (size_t i = 0; i < resultado.size(); i++) {
-        if (i > 0 && i % 5 == 0) {
-            resultadoEspaciado += " ";
-        }
-        resultadoEspaciado += resultado[i];
-    }
 
-    // Escribir el resultado
-    std::ofstream archivoSalida(archivoSinTraducir);
-    if (archivoSalida.is_open()) {
-        archivoSalida << resultadoEspaciado;
-        archivoSalida.close();
-    }
-    else {
-        std::cout << "[!] No se pudo escribir el archivo traducido!" << std::endl;
-    }
+void reiniciarRotores(mapeado& posicionCaracter) {
+
+    std::cout << "Configurando rotores en posiciones: "
+        << posicionCaracter.ventana1 << " "
+        << posicionCaracter.ventana2 << " "
+        << posicionCaracter.ventana3 << std::endl;
+    posicionCaracter.contador1 = posicionCaracter.ventana1 - 'A';
+    posicionCaracter.contador2 = posicionCaracter.ventana2 - 'A';
+    posicionCaracter.contador3 = posicionCaracter.ventana3 - 'A';
 }
 
 void inicializarArchivosConfiguracion(mapeado& posicionCaracter) {
 
     std::ofstream archivoPB(ARCHIVO_PLUGBOARD), archivoR1(ARCHIVO_R1), archivoR2(ARCHIVO_R2), archivoR3(ARCHIVO_R3), archivoRT(ARCHIVO_REFLECTOR);
 
-    posicionCaracter.ventana1 = 'A';
-    posicionCaracter.ventana2 = 'A';
-    posicionCaracter.ventana3 = 'A';
+    char rotor1[] = "EKMFLGDQVZNTOWYHXUSPAIBRCJ";
+    char rotor2[] = "AJDKSIRUXBLHWTMCQGZNPYFVOE";
+    char rotor3[] = "BDFHJLCPRTXVZNYEIWGAKMUSQO";
+    char reflector[] = "YRUHQSLDPXNGOKMIEBFZCWVJAT";
+    char plug1[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+    char plug2[] = "ZYXWVUTSRQPONMLKJIHGFEDCBA";
 
-    char notch1 = 'F', notch2 = 'D', notch3 = 'P';
+    archivoR1 << rotor1 << '\n' << 'Q';
+    archivoR2 << rotor2 << '\n' << 'E';
+    archivoR3 << rotor3 << '\n' << 'V';
+    archivoRT << reflector;
 
-    char lista1[LETRAS_ABCEDARIO] = { 'H', 'D', 'Q', 'A', 'V', 'M', 'R', 'W', 'S', 'K', 'N', 'G', 'Y', 'E', 'L', 'T', 'B', 'X', 'C', 'F', 'P', 'I', 'U', 'J', 'O', 'Z' };
-    char lista2[LETRAS_ABCEDARIO] = { 'F', 'J', 'S', 'W', 'N', 'Z', 'K', 'O', 'Y', 'G', 'L', 'P', 'E', 'Q', 'C', 'U', 'X', 'A', 'M', 'R', 'D', 'T', 'B', 'I', 'V', 'H' };
-    char lista3[LETRAS_ABCEDARIO] = { 'T', 'Y', 'O', 'B', 'V', 'K', 'R', 'J', 'X', 'Q', 'M', 'D', 'S', 'H', 'U', 'W', 'A', 'N', 'Z', 'E', 'C', 'G', 'P', 'L', 'I', 'F' };
-    char lista4[LETRAS_ABCEDARIO] = { 'E', 'P', 'L', 'U', 'Z', 'W', 'K', 'X', 'O', 'R', 'J', 'D', 'Q', 'S', 'C', 'N', 'V', 'I', 'H', 'A', 'F', 'G', 'Y', 'B', 'M', 'T' };
-    char lista5[LETRAS_ABCEDARIO] = { 'M', 'G', 'Y', 'T', 'J', 'F', 'Q', 'E', 'S', 'B', 'O', 'L', 'X', 'H', 'D', 'R', 'I', 'A', 'P', 'V', 'C', 'N', 'K', 'U', 'W', 'Z' };
-    char listaRT[LETRAS_ABCEDARIO] = { 'Y', 'R', 'U', 'H', 'Q', 'S', 'L', 'D', 'P', 'X', 'N', 'G', 'O', 'K', 'M', 'I', 'E', 'B', 'F', 'Z', 'C', 'W', 'V', 'J', 'A', 'T' };
-
-    for (int i = 0; i < LETRAS_ABCEDARIO; i++)
+    for (int i = 0; i < 26; i++) 
     {
-        archivoPB.put(lista1[i]);
-        archivoR1.put(lista3[i]);
-        archivoR2.put(lista4[i]);
-        archivoR3.put(lista5[i]);
-        archivoRT.put(listaRT[i]);
+        archivoPB.put(plug1[i]);
     }
 
-    archivoPB.put('\n');
-    archivoR1.put('\n');
-    archivoR2.put('\n');
-    archivoR3.put('\n');
+    archivoPB << '\n';
 
-    archivoR1.put(notch1);
-    archivoR2.put(notch2);
-    archivoR3.put(notch3);
+    for (int i = 0; i < 26; i++) 
+    {
+        archivoPB.put(plug2[i]);
+    }
 
+    archivoPB.close();
     archivoR1.close();
     archivoR2.close();
     archivoR3.close();
     archivoRT.close();
+}
 
-    for (int i = 0; i < LETRAS_ABCEDARIO; i++)
+
+void traducir_mensaje(std::string archivo) {
+
+    std::ifstream entrada(archivo);
+
+    if (!entrada.is_open())
     {
-        archivoPB.put(lista2[i]);
+        return;
     }
 
-    archivoPB.close();
+    std::string resultado;
+    char c;
 
+    while (entrada.get(c)) if (isalpha(c))
+    {
+        resultado += toupper(c);
+    }
+
+    entrada.close();
+
+    std::string conEspacios;
+
+    for (size_t i = 0; i < resultado.size(); ++i) 
+    {
+        if (i > 0 && i % 5 == 0) conEspacios += ' ';
+        conEspacios += resultado[i];
+    }
+
+    std::ofstream salida(archivo);
+
+    salida << conEspacios;
+    salida.close();
 }
 
-
-void reiniciarRotores(mapeado& posicionCaracter) {
-    posicionCaracter.contador1 = posicionCaracter.ventana1 - 'A';
-    posicionCaracter.contador2 = posicionCaracter.ventana2 - 'A';
-    posicionCaracter.contador3 = posicionCaracter.ventana3 - 'A';
-    
-    posicionCaracter.contador1 = 0;
-    posicionCaracter.contador2 = 0;
-    posicionCaracter.contador3 = 0;
-
-    inicializarArchivosConfiguracion(posicionCaracter);
-}
-
-void cifrar(std::string archivoCifrar, mapeado& posicionCaracter) {
+void cifrar(std::string archivo, mapeado& posicionCaracter) {
 
     reiniciarRotores(posicionCaracter);
 
-    std::cout << "[-] Traduciendo mensaje";
+    std::cout << "[-] Traduciendo mensaje...\n";
 
-    for (int i = 0; i < 3; i++)
+    traducir_mensaje(archivo);
+
+    std::ifstream entrada(archivo);
+    std::string salidaArchivo = archivo.substr(0, archivo.find(".txt")) + "CIFRADO.txt";
+    std::ofstream salida(salidaArchivo);
+
+    char c;
+
+    while (entrada.get(c)) 
     {
-        Sleep(200);
-        std::cout << ".";
+        if (c == ' ') salida.put(' ');
+        else salida.put(secuenciaRotores(c, posicionCaracter, true));
     }
 
-    std::cout << std::endl;
-
-    traducir_mensaje(archivoCifrar);
-
-    std::cout << "[-] Cifrando mensaje";
-
-    for (int i = 0; i < 3; i++)
-    {
-        Sleep(200);
-        std::cout << ".";
-    }
-
-    std::cout << std::endl;
-
-    std::ifstream archivoTraducido(archivoCifrar);
-    std::string archivoCifrado;
-
-    for (int i = 0; i < archivoCifrar.size(); i++)
-    {
-        if ((i <= archivoCifrar.size() - 4)  && (archivoCifrar[i] == '.' && archivoCifrar[i + 1] == 't' && archivoCifrar[i + 2] == 'x' && archivoCifrar[i + 3] == 't'))
-        {
-            break;
-        }
-        archivoCifrado += archivoCifrar[i];
-    }
-
-    archivoCifrado += "CIFRADO.txt";
-
-    std::ofstream archivoEscribirCifrado(archivoCifrado);
-
-    if (!archivoTraducido.is_open())
-    {
-        std::cout << "[!] Error al abrir el archivo!" << std::endl;
-    }
-
-    char caracterLeido, caracterCambiado;
-
-    while (archivoTraducido.get(caracterLeido))
-    {
-        if (caracterLeido == ' ')
-        {
-            archivoEscribirCifrado.put(' ');
-            continue;
-        }
-
-        caracterCambiado = secuenciaRotores(caracterLeido, posicionCaracter, 1);
-
-        archivoEscribirCifrado.put(caracterCambiado);
-
-    }
-    
-    archivoTraducido.close();
-
-    archivoEscribirCifrado.close();
-
-    std::cout << "[+] Mensaje cifrado. Guardado como: " << archivoCifrado << std::endl;
+    entrada.close();
+    salida.close();
+    std::cout << "[+] Mensaje cifrado. Guardado como: " << salidaArchivo << std::endl;
     system("pause");
-    system("cls");
 }
 
-void descifrar(std::string archivoDescifrar, mapeado& posicionCaracter) {
-    
+void descifrar(std::string archivo, mapeado& posicionCaracter) {
+
     reiniciarRotores(posicionCaracter);
 
-    std::cout << "[-] Descifrando mensaje";
+    std::cout << "[-] Descifrando mensaje...\n";
 
-    for (int i = 0; i < 3; i++)
+    std::ifstream entrada(archivo);
+    std::string salidaArchivo = archivo.substr(0, archivo.find(".txt")) + "DESCIFRADO.txt";
+    std::ofstream salida(salidaArchivo);
+
+    char c;
+
+    while (entrada.get(c)) 
     {
-        Sleep(200);
-        std::cout << ".";
+        if (c == ' ') salida.put(' ');
+        else salida.put(secuenciaRotores(c, posicionCaracter, false));
     }
 
-    std::cout << std::endl;
+    entrada.close();
+    salida.close();
 
-    std::ifstream archivoTraducido(archivoDescifrar);
-    std::string archivoDesifrado;
+    std::cout << "[+] Mensaje descifrado. Guardado como: " << salidaArchivo << std::endl;
 
-    for (int i = 0; i < archivoDescifrar.size(); i++)
+    system("pause");
+}
+
+void listar_archivos_txt() {
+
+    // Llamamos al comando dir y guardamos la salida en un archivo temporal
+    system("dir /b *.txt > lista_archivos.txt");
+
+    std::ifstream archivo("lista_archivos.txt");
+    std::string linea;
+
+    while (std::getline(archivo, linea)) 
     {
-        if ((i <= archivoDescifrar.size() - 4) && (archivoDescifrar[i] == '.' && archivoDescifrar[i + 1] == 't' && archivoDescifrar[i + 2] == 'x' && archivoDescifrar[i + 3] == 't'))
+        if (linea == "lista_archivos.txt")
         {
-            break;
-        }
-        archivoDesifrado += archivoDescifrar[i];
-    }
-
-    archivoDesifrado += "DESCIFRADO.txt";
-
-    std::ofstream archivoEscribirDesifrado(archivoDesifrado);
-
-    if (!archivoTraducido.is_open())
-    {
-        std::cout << "[!] Error al abrir el archivo!" << std::endl;
-    }
-
-    char caracterLeido, caracterCambiado;
-
-    while (archivoTraducido.get(caracterLeido))
-    {
-        if (caracterLeido == ' ')
-        {
-            archivoEscribirDesifrado.put(' ');
             continue;
         }
 
-        caracterCambiado = secuenciaRotores(caracterLeido, posicionCaracter, 0);
-
-        archivoEscribirDesifrado.put(caracterCambiado);
-
+        std::cout << " - " << linea << std::endl;
     }
 
-    archivoTraducido.close();
+    archivo.close();
 
-    archivoEscribirDesifrado.close();
-
-    std::cout << "[+] Mensaje descifrado. Guardado como: " << archivoDesifrado << std::endl;
-    system("pause");
-    system("cls");
-}
-
-
-void introducirRotor(int opcion) {
-    
-    bool insercionValida;
-    std::string lineaRotor;
-
-    std::cout << "MODIFICAR ROTOR " << opcion << std::endl;
-    do
-    {
-        insercionValida = true;
-        std::cout << "Introduce en una sola linea 26 caracteres (A-Z) en mayusculas ordenados o desordenados sin repeticiones: ";
-        std::getline(std::cin, lineaRotor);
-
-        if (lineaRotor.size() == 26)
-        {
-            //IA
-            std::unordered_set<char> caracteres;
-            for (char c : lineaRotor) {
-                if (caracteres.count(c) > 0) {  // Si el carácter ya existe
-                    insercionValida = false;
-                }
-                if (c < 'A' || c > 'Z')
-                {
-                    insercionValida = false;
-                    break;
-                }
-                caracteres.insert(c);
-            }
-            
-        }
-
-    } while (insercionValida);
-
-    std::ofstream archivoR1(ARCHIVO_R1);
-    std::ofstream archivoR2(ARCHIVO_R2);
-    std::ofstream archivoR3(ARCHIVO_R3);
-
-    switch (opcion)
-    {
-    case 1:
-        if (archivoR1.is_open())
-        {
-            archivoR1 << lineaRotor;
-        }
-        break;
-    case 2:
-        if (archivoR2.is_open())
-        {
-            archivoR2 << lineaRotor;
-        }
-        break;
-    case 3:
-        if (archivoR3.is_open())
-        {
-            archivoR3 << lineaRotor;
-        }
-        break;
-    default:
-        break;
-    }
-
-    archivoR1.close();
-    archivoR2.close();
-    archivoR3.close();
+    // (Opcional) Eliminar el archivo temporal si no quieres dejar rastro
+    remove("lista_archivos.txt");
 }

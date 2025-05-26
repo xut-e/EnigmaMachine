@@ -1,16 +1,18 @@
 #pragma once
 #include "structs.h"
 
-void listar_archivos_txt();
+int obtenerNotch(const char* archivoRotor);
 
-void cifrar(std::string archivoCifrar, mapeado& posicionCaracter);
+void avanzarRotores(mapeado& posicionCaracter);
 
-void descifrar(std::string archivoCifrar, mapeado& posicionCaracter);
-
-void traducir_mensaje(std::string archivoSinTraducir);
+void reiniciarRotores(mapeado& posicionCaracter);
 
 void inicializarArchivosConfiguracion(mapeado& posicionCaracter);
 
-void introducirRotor(int opcion);
+void traducir_mensaje(std::string archivo);
 
-void reiniciarRotores(mapeado& posicionCaracter);
+void cifrar(std::string archivo, mapeado& posicionCaracter);
+
+void descifrar(std::string archivo, mapeado& posicionCaracter);
+
+void listar_archivos_txt();
