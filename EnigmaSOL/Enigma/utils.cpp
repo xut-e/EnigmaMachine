@@ -70,7 +70,7 @@ void avanzarRotores(mapeado& posicionCaracter) {
 void reiniciarRotores(mapeado& posicionCaracter) {
 
     //Mensaje de debug
-    std::cout << "Configurando rotores en posiciones: " << posicionCaracter.ventana1 << " "   << posicionCaracter.ventana2 << " "  << posicionCaracter.ventana3 << std::endl;
+    std::cout << "[+] Configurando rotores en posiciones: " << posicionCaracter.ventana1 << " "   << posicionCaracter.ventana2 << " "  << posicionCaracter.ventana3 << std::endl;
     //Reiniciamos los contadores a su posicion original
     posicionCaracter.contador1 = posicionCaracter.ventana1 - 'A';
     posicionCaracter.contador2 = posicionCaracter.ventana2 - 'A';

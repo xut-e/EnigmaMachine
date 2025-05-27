@@ -21,9 +21,9 @@ void menu_cifrado(mapeado& posicionCaracter) {
 	{
 		if (opcion != 1 && opcion != 2 && opcion != 0)
 		{
-			std::cout << "La opcion introducida no es valida!" << std::endl;
+			std::cout << "[!] La opcion introducida no es valida!" << std::endl;
 		}
-		std::cout << "Elige una opcion: ";
+		std::cout << "[-] Elige una opcion: ";
 		std::cin >> opcion;
 
 	} while (opcion != 1 && opcion != 2 && opcion != 0);
@@ -66,10 +66,10 @@ void menu_descifrado(mapeado& posicionCaracter) {
 	{
 		if (opcion != 1 && opcion != 2 && opcion != 0)
 		{
-			std::cout << "La opcion introducida no es valida!" << std::endl;
+			std::cout << "[!] La opcion introducida no es valida!" << std::endl;
 		}
 
-		std::cout << "Elige una opcion: ";
+		std::cout << "[-] Elige una opcion: ";
 		std::cin >> opcion;
 
 	} while (opcion != 1 && opcion != 2 && opcion != 0);
@@ -107,9 +107,9 @@ void modificar_configuracion(mapeado& posicionCaracter) {
 	{
 		if (opcion < 0 || opcion > 4)
 		{
-			std::cout << "La opcion introducida no es valida!" << std::endl;
+			std::cout << "[!] La opcion introducida no es valida!" << std::endl;
 		}
-		std::cout << "Elige una opcion: ";
+		std::cout << "[-] Elige una opcion: ";
 		std::cin >> opcion;
 
 	} while (opcion < 0 || opcion > 4);

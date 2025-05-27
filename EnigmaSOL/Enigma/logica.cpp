@@ -85,9 +85,12 @@ char secuenciaRotores(char caracterLeido, mapeado& posicionCaracter, bool cifran
 
     //Procesamos el plugboard sin sobrescribir los contadores (porque todavia no hay movimiento de rotores)
     mapeado plug = pasarPlugBoard(caracterLeido);
-
+    //////////////////////////////////////////////////////////
+    // DESCOMENTAR ABAJO PARA VER EL PROCESO DE LOS ROTORES //
+    //////////////////////////////////////////////////////////
+    
     //Mensaje de debug
-    std::cout << "Procesando '" << caracterLeido << "' contadores: " << posicionCaracter.contador1 << " "   << posicionCaracter.contador2 << " " << posicionCaracter.contador3 << std::endl;
+    //std::cout << "Procesando '" << caracterLeido << "' contadores: " << posicionCaracter.contador1 << " "   << posicionCaracter.contador2 << " " << posicionCaracter.contador3 << std::endl;
 
     //Sacamos la posicion inicial
     int pos = plug.letra - 'A';
