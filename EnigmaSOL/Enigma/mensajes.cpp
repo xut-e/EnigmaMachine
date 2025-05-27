@@ -2,109 +2,119 @@
 #include <fstream>
 #include <string>
 #include "utils.h"
+#include "const.h"
 
-void introducir_mensaje() {
-	int opcion = 1;
+//Funcion para controlar la introduccion de mensajes (que acabaran siendo archivos)
+void introducir_mensaje(mapeado& posicionCaracter, bool cifrando) {
+
 	std::string mensaje, nombreArchivo;
-	bool nombreValido = true;
+	bool nombreValido = false;
 
-	do
+	//Bucle para asegurar la validez del nombre de entrada
+	do 
 	{
-		
-
-		if (!nombreValido)
-		{
-			std::cout << "El nombre introducido no es valido!" << std::endl;
-		}
-
-		nombreValido = true;
-
-		std::cout << "Introduce el nombre del archivo que se generara (archivo.txt): ";
+		std::cout << "[-] Introduce el nombre del archivo que se generara (archivo.txt): ";
 		std::cin >> nombreArchivo;
 
-		if (!(nombreArchivo[nombreArchivo.length() - 1] == 't' && nombreArchivo[nombreArchivo.length() - 2] == 'x' && nombreArchivo[nombreArchivo.length() - 3] == 't' && nombreArchivo[nombreArchivo.length() - 4] == '.'))
+		nombreValido = true;
+		//Comprobacion para asegurarnos de que termina en .txt (ayuda IA)
+		if (nombreArchivo.length() < 4 || nombreArchivo.substr(nombreArchivo.length() - 4) != ".txt") 
 		{
+			std::cout << "[!] El archivo debe terminar en .txt" << std::endl;
 			nombreValido = false;
 			continue;
 		}
 
-		for (int i = 0; i < nombreArchivo.length(); i++)
+		//Usamos un iterador en las letras del nombre para mas eficiencia
+		for (char c : nombreArchivo) 
 		{
-			if (!((nombreArchivo[i] >= '0' && nombreArchivo[i] <= '9') || (nombreArchivo[i] >= 'A' && nombreArchivo[i] <= 'Z') || (nombreArchivo[i] >= 'a' && nombreArchivo[i] <= 'z') || (nombreArchivo[i] == '.' || (nombreArchivo[i] == '_'))))
+			//Manera mas eficiente de comprobar los caracteres (ayuda IA)
+			if (!isalnum(c) && c != '.' && c != '_') 
 			{
+				std::cout << "[!] Caracter no permitido en el nombre: " << c << std::endl;
 				nombreValido = false;
 				break;
 			}
 		}
-
 	} while (!nombreValido);
 
-	std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+	//Limpiamos la entrada std::cin para que no quede llena de basura
+	std::cin.ignore();
 
-	std::cout << "Introduce el mensaje a cifrar: ";
+	//Introducimos el mensaje que se guardara
+	std::cout << "[-] Introduce el mensaje a cifrar: ";
+
 	std::getline(std::cin, mensaje);
-
 
 	std::ofstream archivoACifrar(nombreArchivo);
 
-	if (archivoACifrar.is_open())
+	//Escribimos el mensaje, si lo estamos cifrando se mandara a cifrar() y si no a descifrar()
+	if (archivoACifrar.is_open()) 
 	{
 		archivoACifrar << mensaje;
 		archivoACifrar.close();
+
+		if (cifrando)
+		{
+			cifrar(nombreArchivo, posicionCaracter);
+		}
+		else
+		{
+			descifrar(nombreArchivo, posicionCaracter);
+		}
+		
 	}
-	else
+	else 
 	{
-		std::cout << "No se encuentra dicho archivo!" << std::endl;
+		std::cout << "[!] No se pudo crear el archivo!" << std::endl;
 	}
-
-	cifrar(nombreArchivo);
-
-	system("cls");
 }
 
-void elegir_documento() {
+//Funcion para elegir uno de los documentos existentes
+void elegir_documento(mapeado& posicionCaracter, bool cifrando) {
 
 	std::string archivoElegido;
 	bool nombreValido;
 	
-	do
+	//Bucle para asegurarnos de que el documento elegido existe
+	do 
 	{
-		nombreValido = false;
 		system("cls");
-		std::cout << "Los archivos disponibles son:" << std::endl;
-
+		std::cout << "[-] Los archivos disponibles son:" << std::endl;
+		//Llamamos a esta funcion para que liste los documentos disponibles
 		listar_archivos_txt();
 
-		std::cout << "Elige un archivo para cifrar: ";
+		std::cout << "[-] Elige un archivo: ";
 		std::cin >> archivoElegido;
 
-		system("dir /b *.txt > lista_archivos.txt");
+		//Comprobamos que se pueda abrir
+		std::ifstream test(archivoElegido);
+		nombreValido = test.is_open();
+		test.close();
 
-		std::ifstream archivo("lista_archivos.txt");
-		std::string linea;
-
-		while (std::getline(archivo, linea)) {
-			
-			if (linea == "lista_archivos.txt")
-			{
-				continue;
-			}
-
-			if (linea == archivoElegido)
-			{
-				nombreValido = true;
-				break;
-			}
-
-			std::cout << " - " << linea << std::endl;
+		//Si el archivo es un archivo critico no damos permiso
+		if (archivoElegido == ARCHIVO_PLUGBOARD || archivoElegido == ARCHIVO_R1 || archivoElegido == ARCHIVO_R2 || archivoElegido == ARCHIVO_R3 || archivoElegido == ARCHIVO_REFLECTOR || archivoElegido == ARCHIVO_TEMPORAL)
+		{
+			nombreValido = false;
 		}
 
-		archivo.close();
-		remove("lista_archivos.txt");
-
-
+		//Mensaje de debug
+		if (!nombreValido) 
+		{
+			std::cout << "[!] El archivo no existe o no es accesible!" << std::endl;
+			system("pause");
+		}
 	} while (!nombreValido);
 	
-	cifrar(archivoElegido);
+	//Si estamos cifrando lo mandamos a cifrar() y si no a descifrar()
+	if (cifrando)
+	{
+		cifrar(archivoElegido, posicionCaracter);
+	}
+	else
+	{
+		descifrar(archivoElegido, posicionCaracter);
+	}
+	
 
 }

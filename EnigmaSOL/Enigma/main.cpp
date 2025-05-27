@@ -1,9 +1,16 @@
 #include <iostream>
 #include <Windows.h>
 #include "menus.h"
+#include "structs.h"
+#include "utils.h"
+#include "config.h"
 
-void main() {
+//ANTES DE EMPEZAR: Llego un momento que tenia tantos system("cls") que no podia saber donde fallaba el codigo, por lo que los sustitui todos por "//system("cls")" y empece a implementar mensajes de debug. Muchos de estos ya no se ven con los "cls" pero he decidido dejarlos
 
+//Funcion principal del flujo de ejecucion
+int main() {
+
+	//Mensaje de bienvenida
 	std::cout << "                   Bienvenido a " << std::endl;
 	std::cout << "                    la maquina" << std::endl;
 	std::cout << "                        ..." << std::endl;
@@ -19,38 +26,55 @@ void main() {
 
 	int opcion = 1;
 	bool exit = 0;
+	
+	mapeado posicionCaracter;
 
+	//Inicializamos los archivos de configuracion a los establecidos por defecto
+	inicializarArchivosConfiguracion(posicionCaracter);
+
+	//Bucle que se ejecuta hasta que el usuario decida salir del programa (seleccionando 0)
 	do
 	{
+		//Impresion de interfaz
 		std::cout << "MENU PRINCIPAL" << std::endl;
-		std::cout << "\t1. Cifrar mensaje.\n\t2. Descifrar mensaje. \n\t0. Salir." << std::endl;
+		std::cout << "\t1. Cifrar mensaje.\n\t2. Descifrar mensaje. \n\t3. Cambiar configuracion. \n\t0. Salir." << std::endl;
+		//Seleccion de opcion
 		do
 		{
-			if (opcion != 1 && opcion != 2 && opcion != 0)
+			if (opcion != 1 && opcion != 2 && opcion != 3 && opcion != 0)
 			{
-				std::cout << "La opcion introducida no es valida!" << std::endl;
+				std::cout << "[!] La opcion introducida no es valida!" << std::endl;
 			}
-			std::cout << "Elige una opcion: ";
+			std::cout << "[-] Elige una opcion: ";
 			std::cin >> opcion;
 
-		} while (opcion != 1 && opcion != 2 && opcion != 0);
+		} while (opcion != 1 && opcion != 2 && opcion != 3 && opcion != 0);
 		
+		//En funcion de la seleccion hacemos una cosa u otra
 		switch (opcion)
 		{
 		case 1:
-			menu_cifrado();
+			//Entramos al menu de cifrado
+			menu_cifrado(posicionCaracter);
 			break;
 		case 2:
-			menu_descifrado();
+			//Entramos al menu de descifrado
+			menu_descifrado(posicionCaracter);
+			break;
+		case 3:
+			//Entramos al menu de configuracion
+			system("cls");
+			modificar_configuracion(posicionCaracter);
 			break;
 		case 0:
-			std::cout << "Saliendo";
-			Sleep(200);
-			std::cout << ".";
-			Sleep(200);
-			std::cout << ".";
-			Sleep(200);
-			std::cout << ".";
+			//Imprimimos mensaje de salida
+			std::cout << "[-] Saliendo";
+
+			for (int i = 0; i < 3; i++)
+			{
+				Sleep(200);
+				std::cout << ".";
+			}
 			break;
 		default:
 			break;
@@ -59,83 +83,5 @@ void main() {
 
 	} while (opcion != 0);
 
-
-	//1.Introducir mensaje
-		
-		//1.1.Pedimos mensaje al usuario
-
-	//2.Traducir mensaje a formato correcto
-
-		//2.1.Verificamos ventana, si correcta, seguimos
-		//2.2.Recorremos las posiciones y traducimos al formato (sin espacios, sin acentos, mayusculas todo, sin signos y despues de esto se separa por grupos de 5 con un espacio)
-
-	//3.Detectar ventana, setear rotores
-
-		//3.1.Detectar las letras iniciales
-		//3.2.Seteamos los rotores
-			//3.2.1.Mover las letras de sitio		
-
-	//4.Bucle de cifrado (cableado + rotores[notch] + reflector + rotores[notch] + cableado)
-
-		//4.1. Primera letra -> Paso por cableado -> Paso por el rotor1.txt (shiftean las letras) -> (si el ultimo caracter del rotor anterior (1) coincide con el notch (segunda linea del rotor siguiente[2] shiftear rotor 2) -> paso por rotor2.txt ->  (si el ultimo caracter del rotor anterior (2) coincide con el notch (segunda linea del rotor siguiente[3] shiftear rotor 3) -> paso por rotor3.txt -> de vuelta, primero comprobacion despues entrada en rotor 3 hasta el cableado
+	return 0;
 }
-
-/*
-aSDAS AS  as!das addà a da!! 
-
-aSDASASas!dasaddàada!!
-
-aSDASASas!dasaddaada!!
-
-A-Za-z != fuera
-
-aSDASASasdasaddaada
-
-toupper()
-
-ASDASASASDASADDAADA
-
-ASDAS ASASD ASADD AADA
-
-
-
-
-
-
-rotor1.txt
-
-ACDEFGHIJKLMNOPQRSTUVWXYZ
-B
-
--> 1ª ventana: R
-
-RSTUVWXYZACDEFGHIJKLMNOPQ
-B
-
-
-ABCDEFGHIJKLMNOPQRSTUVWXYZ
-
-Establece un notch: _E_
-
-for rotor1.txt -> E
-
-ABCDFGHIJKLMNOPQRSTUVWXYZ
-E
-
-
-
-COSAS QUE NECESITAMOS:
-
-rotor1.txt
-rotor2.txt
-rotor3.txt
-
-mensaje.txt (si no es txt no funcionar)
-
-mensajeCifrado.txt
-
-cableado.txt
-
-
-
-*/
