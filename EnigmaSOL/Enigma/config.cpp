@@ -46,7 +46,7 @@ void cambiarNotch(int opcion) {
 	//Validacion del nuevo notch
 	do 
 	{
-		std::cout << "Introduce el nuevo notch (letra A-Z): ";
+		std::cout << "[-] Introduce el nuevo notch (letra A-Z): ";
 		std::cin >> nuevoNotch;
 		nuevoNotch = toupper(nuevoNotch);
 	} while (nuevoNotch < 'A' || nuevoNotch > 'Z');
@@ -79,7 +79,7 @@ void cambiar_plugboard() {
 
 	//Interfaz de cambio de plugboard
 	std::cout << "CONFIGURAR PLUGBOARD" << std::endl;
-	std::cout << "Introduce las letras del primer alfabeto (A-Z sin repetir). Debe ser una permutacion simetrica para funcionar (si A -> Z, Z -> A): ";
+	std::cout << "[-] Introduce las letras del primer alfabeto (A-Z sin repetir). Debe ser una permutacion simetrica para funcionar (si A -> Z, Z -> A): ";
 
 	while (!valido) 
 	{
@@ -112,7 +112,7 @@ void cambiar_plugboard() {
 	//Hacemos el mismo proceso para la segunda tanda
 	valido = false;
 
-	std::cout << "Introduce las letras del primer alfabeto (A-Z sin repetir). Debe ser una permutacion simetrica para funcionar (si A -> Z, Z -> A): ";
+	std::cout << "[-] Introduce las letras del primer alfabeto (A-Z sin repetir). Debe ser una permutacion simetrica para funcionar (si A -> Z, Z -> A): ";
 
 	while (!valido) 
 	{
@@ -165,29 +165,29 @@ void configuracion_ventanas(mapeado& posicionCaracter) {
 	//Interfaz de cambio de ventanas
 	std::cout << "CAMBIO DE VENTANAS" << std::endl;
 	//Actualizacion para ver la configuracion actual
-	std::cout << "Configuracion actual (" << posicionCaracter.ventana3 << posicionCaracter.ventana2 << posicionCaracter.ventana1 << ")." << std::endl;
+	std::cout << "[+] Configuracion actual (" << posicionCaracter.ventana3 << posicionCaracter.ventana2 << posicionCaracter.ventana1 << ")." << std::endl;
 	//Seleccion de ventana
 	do
 	{
-		std::cout << "Introduce la ventana para el rotor 1 (derecha): ";
+		std::cout << "[-] Introduce la ventana para el rotor 1 (derecha): ";
 		std::cin >> posicionCaracter.ventana1;
 	} while (posicionCaracter.ventana1 < 'A' || posicionCaracter.ventana1 > 'Z');
 
 	//Igual que la ventana 1
 	system("cls");
 	std::cout << "CAMBIO DE VENTANAS" << std::endl;
-	std::cout << "Configuracion actual (" << posicionCaracter.ventana3 << posicionCaracter.ventana2 << posicionCaracter.ventana1 << ")." << std::endl;
+	std::cout << "[+] Configuracion actual (" << posicionCaracter.ventana3 << posicionCaracter.ventana2 << posicionCaracter.ventana1 << ")." << std::endl;
 	do {
-		std::cout << "Introduce la ventana para el rotor 2 (medio): ";
+		std::cout << "[-] Introduce la ventana para el rotor 2 (medio): ";
 		std::cin >> posicionCaracter.ventana2;
 	} while (posicionCaracter.ventana2 < 'A' || posicionCaracter.ventana2 > 'Z');
 
 	//Igual que la ventana 1
 	system("cls");
 	std::cout << "CAMBIO DE VENTANAS" << std::endl;
-	std::cout << "Configuracion actual (" << posicionCaracter.ventana3 << posicionCaracter.ventana2 << posicionCaracter.ventana1 << ")." << std::endl;
+	std::cout << "[+] Configuracion actual (" << posicionCaracter.ventana3 << posicionCaracter.ventana2 << posicionCaracter.ventana1 << ")." << std::endl;
 	do {
-		std::cout << "Introduce la ventana para el rotor 3 (izquierda): ";
+		std::cout << "[-] Introduce la ventana para el rotor 3 (izquierda): ";
 		std::cin >> posicionCaracter.ventana3;
 	} while (posicionCaracter.ventana3 < 'A' || posicionCaracter.ventana3 > 'Z');
 
@@ -208,7 +208,7 @@ void introducirRotor(int opcion) {
 	{
 		insercionValida = true;
 
-		std::cout << "Introduce 26 letras mayusculas (sin repeticiones): ";
+		std::cout << "[-] Introduce 26 letras mayusculas (sin repeticiones): ";
 		std::getline(std::cin >> std::ws, lineaRotor);
 
 		if (lineaRotor.size() != 26) 
@@ -288,9 +288,9 @@ void configuracion_rotores(mapeado& posicionCaracter) {
 		{
 			if (opcion < 0 || opcion > 6)
 			{
-				std::cout << "La opcion introducida no es valida!" << std::endl;
+				std::cout << "[!] La opcion introducida no es valida!" << std::endl;
 			}
-			std::cout << "Elige una opcion: ";
+			std::cout << "[-] Elige una opcion: ";
 			std::cin >> opcion;
 
 		} while (opcion < 0 || opcion > 6);
@@ -344,9 +344,9 @@ void configuracion_plugboard(mapeado& posicionCaracter) {
 		{
 			if (opcion != 1 && opcion != 0)
 			{
-				std::cout << "La opcion introducida no es valida!" << std::endl;
+				std::cout << "[!] La opcion introducida no es valida!" << std::endl;
 			}
-			std::cout << "Elige una opcion: ";
+			std::cout << "[-] Elige una opcion: ";
 			std::cin >> opcion;
 
 		} while (opcion != 1 && opcion != 0);
